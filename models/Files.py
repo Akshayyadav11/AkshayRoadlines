@@ -17,14 +17,9 @@ class Files(BaseDB):
            binaryData = file.read()
         return binaryData
 
-    def fileupload(self,req_file):
+    def fileupload(self,filename, filedata):
         try:
-            filename = req_file.filename;
-            print("--req_file-filename----",req_file.filename)
-            req_file.save(req_file.filename)
-            filedata  = self.convertToBinaryData(req_file.filename)
-           
-            print("---filename----", filename)
+            
             connection = self.db.get_connection()
             cursor = connection.cursor(dictionary=True)
 

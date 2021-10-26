@@ -22,11 +22,11 @@ def uploader():
         
         if request.method == 'POST' and request.files['file'].filename:
             
-            req_file = request.files['file']
-            
+            req_file = request.files['file'].filename
+            bytedata = request.files['file'].read()
             
             filemodel = Files()
-            response_data  = filemodel.fileupload(req_file)
+            response_data  = filemodel.fileupload(req_file,bytedata)
             print("--response_data-",response_data)
         else:
             response_data  = "File not selected"           
