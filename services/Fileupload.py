@@ -35,4 +35,29 @@ def uploader():
 
     except Exception as e:
         print(e)
+        return jsonify({"error": str(e)}), 500
+        
+
+
+@files.route('/downloader', methods =['POST'])
+def downloader():
+    try:
+        
+        if request.method == 'POST':
+            
+            
+            request_data = request.get_json()
+            docuid  = request_data.get('docid')
+            
+            filemodel = Files()
+            response_data  = filemodel.filedownload(docuid)
+            print("-succ-response_data-",response_data)
+        else:
+            response_data  = "File not able to download"           
+            print("--response_data-",response_data)
+
+        return response_data
+
+    except Exception as e:
+        print(e)
         return jsonify({"error": str(e)}), 500   
