@@ -3,11 +3,15 @@ from flask import Flask, render_template,request, redirect, url_for, make_respon
 from flask_mysqldb import MySQL
 from models.BaseDB  import BaseDB  
 import re
-
+from datetime import datetime, timedelta
+from functools import wraps
+import jwt
+from  werkzeug.security import generate_password_hash, check_password_hash
 
 from models.Users import Users
 
 users = Blueprint("users", __name__)
+
 
 
 @users.route('/')
@@ -16,17 +20,15 @@ def login():
     try:     
         msg = '' 
         response_data = ''           
-        if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+        if request.method == 'POST' and 'emailId' in request.form and 'password' in request.form:
     
-            username = request.form['username']
+            emailId = request.form['emailId']
             password = request.form['password']
-            print("---",username,password)
+            print("---",emailId,password)
             loginDetails =  Users()
-            response_data = loginDetails.login(username, password)
+            response_data = loginDetails.login(emailId, password)
             if response_data  == "Logged in successfully !":
-                print("response_data--",response_data)
                 return render_template('index.html', msg = response_data)
-               
             else:
                 return render_template('login.html', msg = response_data)
                

@@ -14,10 +14,10 @@ registers = Blueprint("registers", __name__)
 def register():
     msg = ''
     response_data = ''
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form :
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'emailId' in request.form :
         username = request.form['username']
         password = request.form['password']
-        email = request.form['email']
+        email = request.form['emailId']
         registerDetails =  Register()
         print("--registerDetails",registerDetails)
         response_data = registerDetails.register(email, username, password)
@@ -30,6 +30,6 @@ def logout():
     print("-----befo----",session)
     session.pop('loggedin', None)
     session.pop('id', None)
-    session.pop('username', None)
+    session.pop('emailId', None)
     print("---afte------",session)
     return redirect(url_for('users.login'))

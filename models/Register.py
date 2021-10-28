@@ -11,10 +11,11 @@ class Register(BaseDB):
     
     def register(self, email, username, password):
         try:
+            print("----email, username, password-----",email, username, password)
             connection = self.db.get_connection()
             cursor = connection.cursor(dictionary=True)
 
-            cursor.execute('SELECT * FROM accounts WHERE username = %s', (username, ))
+            cursor.execute('SELECT * FROM accounts WHERE email = %s', (email, ))
             account = cursor.fetchone()
             print("---------",account)
             if account:
