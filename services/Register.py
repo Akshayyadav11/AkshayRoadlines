@@ -3,9 +3,10 @@ from flask import Flask, render_template,request, redirect, url_for, make_respon
 from flask_mysqldb import MySQL
 from models.BaseDB  import BaseDB  
 import re
-
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from models.Register import Register
+from flask import current_app as app
+from models.Authorization import Authorization
 
 users = Blueprint("users", __name__)
 registers = Blueprint("registers", __name__)
@@ -20,12 +21,14 @@ def register():
         email = request.form['emailId']
         registerDetails =  Register()
         print("--registerDetails",registerDetails)
-        response_data = registerDetails.register(email, username, password)
+        hash_pwd = generate_password_hash(password,'sha256')
+        response_data = registerDetails.register(email, username, hash_pwd)
     elif request.method == 'POST':
         response_data = 'Please fill out the form !'
     return render_template('register.html', msg = response_data)
 
 @registers.route('/logout')
+@Authorization.token_required
 def logout():
     print("-----befo----",session)
     session.pop('loggedin', None)

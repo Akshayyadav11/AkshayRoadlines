@@ -8,24 +8,27 @@ class Users(BaseDB):
         self.db = BaseDB()
         print("----",self.db)
     
-    def login(self, emailId, password):
+    def login(self, emailId):
         try:
             msg = ''
             connection = self.db.get_connection()
             cursor = connection.cursor(dictionary=True)
 
-            cursor.execute('SELECT * FROM accounts WHERE email = %s AND password = %s', (emailId, password, ))
+            # cursor.execute('SELECT * FROM accounts WHERE email = %s AND password = %s', (emailId, password, ))
+            cursor.execute('SELECT * FROM accounts WHERE email = %s ', (emailId, ))
+           
             account = cursor.fetchone()
-            if account:
-                session['loggedin'] = True
-                session['id'] = account['id']
-                session['emailId'] = account['email']
-                print(session)     
-                msg ='Logged in successfully !'  
-            else:             
-                msg ='Incorrect emailId / password !'
+            # if account:
+            #     session['loggedin'] = True
+            #     session['id'] = account['id']
+            #     session['emailId'] = account['email']
+            #     print(session)     
+            #     msg ='Logged in successfully !'  
+            # else:             
+            #     msg ='Incorrect emailId / password !'
 
-            return msg
+            # return msg
+            return account
         except Exception as e:
             print(e)
 

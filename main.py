@@ -8,8 +8,10 @@ from services.Fileupload import files
 app = Flask(__name__)
 
   
-key  =  uuid.uuid4().hex  
-app.secret_key = key
+# key  =  uuid.uuid4().hex  
+# app.secret_key = key
+
+app.config['SECRET_KEY'] = "499baae0-223a-4e68-b72e-eb0719d0ee37"
 
 
 app.register_blueprint(users)
