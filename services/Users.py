@@ -2,7 +2,7 @@
 from flask import Flask, render_template,request, redirect, url_for, make_response,session, jsonify,Blueprint, flash
 from flask_mysqldb import MySQL
 from werkzeug.datastructures import Authorization
-from models.Authorize import Authorize
+from models.Authorize import Authorize 
 from models.BaseDB  import BaseDB  
 import re
 import datetime
@@ -39,14 +39,15 @@ def login():
             
             if check_password_hash(response_data['password'],password):
                 print("-------in inf-------")
-                access_token = jwt.encode({'userId':response_data['id'],'emailId':response_data['email'], 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
+                access_token = Authorize.create_access_token(response_data)
+                # access_token = jwt.encode({'userId':response_data['id'],'emailId':response_data['email'], 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
                 # print("token---", access_token)
 
-                refresh_token = jwt.encode({'userId':response_data['id'],'emailId':response_data['email'], 'grant_type':'refresh', 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
+                # refresh_token = jwt.encode({'userId':response_data['id'],'emailId':response_data['email'], 'grant_type':'refresh', 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
                
                 return make_response(jsonify({
                                     'access_token' : access_token,
-                                    'refresh_token':refresh_token,
+                                    # 'refresh_token':refresh_token,
                                     'userId':response_data['id'],
                                     'emailId':response_data['email'],
                                     'message':'Logged in successfully'
