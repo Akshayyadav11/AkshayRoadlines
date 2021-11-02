@@ -24,8 +24,9 @@ class Authorize():
                 print("payload-----",payload)
             # except:
             #     return jsonify({"Invalid token"})
-            except (jwt.InvalidTokenError, jwt.ExpiredSignature, jwt.DecodeError) as exc:
-                raise (str(exc))
+            except (Exception ) as exc:
+                 return jsonify({"message":'Token is Expired/Invalid'},500)
+                # raise (str(exc))
             # return payload 
             
             return func(*args, **kwrags)
