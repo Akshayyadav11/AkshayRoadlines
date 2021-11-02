@@ -37,5 +37,5 @@ class Authorize():
         return access_token
     
     def create_refresh_token(response_data):
-        access_token = jwt.encode({'userId':response_data['id'],'emailId':response_data['email'], 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
-        return access_token
+        refresh_token = jwt.encode({'userId':response_data['id'],'emailId':response_data['email'], 'grant_type':'refresh', 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
+        return refresh_token
