@@ -40,7 +40,8 @@ def login():
                 print("token---", token)
 
                 return make_response(jsonify({'token' : token,
-                                               'userId':response_data[id],
+                                               'userId':response_data['id'],
+                                               'emailId':response_data['email'],
                                                'message':'Logged in successfully'}), 201)
             
             print("check_password_hash--else-")
