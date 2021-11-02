@@ -1,6 +1,8 @@
 
 from flask import Flask, render_template,request, redirect, url_for, make_response,session, jsonify,Blueprint, flash
 from flask_mysqldb import MySQL
+from werkzeug.datastructures import Authorization
+from models.Authorize import Authorize
 from models.BaseDB  import BaseDB  
 import re
 import datetime
@@ -11,6 +13,7 @@ from  werkzeug.security import generate_password_hash, check_password_hash
 
 from models.Users import Users
 from flask import current_app as app
+
 
 users = Blueprint("users", __name__)
 
@@ -29,7 +32,7 @@ def login():
             response_data = loginDetails.login(emailId)
             if response_data is None:
                 return make_response(
-                        'Could not verify login',
+                        'Could not verify!!',
                         401,
                         {'WWW-Authenticate' : 'Basic realm ="Login Required !!"'}
                     ) 
@@ -46,7 +49,7 @@ def login():
             
             print("check_password_hash--else-")
             return make_response(
-                    'Could not verify hash',
+                    'Could not verify passoword !!',
                     401,
                     {'WWW-Authenticate' : 'Basic realm ="Login Required !!"'}
                 ) 
@@ -64,3 +67,14 @@ def login():
         print(e)       
         return jsonify({"error": str(e)}), 500   
 
+
+
+@users.route('/protected', methods =['GET', 'POST'])
+@Authorize.token_required
+def protected():
+    return jsonify({"message": str("protected")}), 200 
+
+
+@users.route('/unprotected', methods =['GET', 'POST'])
+def unprotected():
+    return jsonify({"message": str("unprotected")}), 200 

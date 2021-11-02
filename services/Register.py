@@ -6,7 +6,7 @@ import re
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.Register import Register
 from flask import current_app as app
-from models.Authorization import Authorization
+from models.Authorize import Authorize
 import jwt
 users = Blueprint("users", __name__)
 registers = Blueprint("registers", __name__)

@@ -6,7 +6,7 @@ from functools import wraps
 from flask import Flask, config,make_response,jsonify, request
 import jwt
 
-class Authorization():
+class Authorize():
     def token_required(func):
         @wraps(func)
         def decorated(*args, **kwrags):
