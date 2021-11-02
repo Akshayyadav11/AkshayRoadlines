@@ -39,7 +39,9 @@ def login():
                 token = jwt.encode({'id':response_data['id'], 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
                 print("token---", token)
 
-                return make_response(jsonify({'token' : token}), 201)
+                return make_response(jsonify({'token' : token,
+                                               'userId':response_data[id],
+                                               'message':'Logged in successfully'}), 201)
             
             print("check_password_hash--else-")
             return make_response(

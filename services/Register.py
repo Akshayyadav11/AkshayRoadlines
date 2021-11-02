@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from models.Register import Register
 from flask import current_app as app
 from models.Authorization import Authorization
-
+import jwt
 users = Blueprint("users", __name__)
 registers = Blueprint("registers", __name__)
 
@@ -28,11 +28,11 @@ def register():
     return render_template('register.html', msg = response_data)
 
 @registers.route('/logout')
-@Authorization.token_required
 def logout():
     print("-----befo----",session)
     session.pop('loggedin', None)
     session.pop('id', None)
     session.pop('emailId', None)
     print("---afte------",session)
+    
     return redirect(url_for('users.login'))
