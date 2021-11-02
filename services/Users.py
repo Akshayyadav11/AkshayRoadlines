@@ -39,13 +39,18 @@ def login():
             
             if check_password_hash(response_data['password'],password):
                 print("-------in inf-------")
-                token = jwt.encode({'id':response_data['id'], 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
-                print("token---", token)
+                access_token = jwt.encode({'userId':response_data['id'],'emailId':response_data['email'], 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
+                # print("token---", access_token)
 
-                return make_response(jsonify({'token' : token,
-                                               'userId':response_data['id'],
-                                               'emailId':response_data['email'],
-                                               'message':'Logged in successfully'}), 201)
+                refresh_token = jwt.encode({'userId':response_data['id'],'emailId':response_data['email'], 'grant_type':'refresh', 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
+               
+                return make_response(jsonify({
+                                    'access_token' : access_token,
+                                    'refresh_token':refresh_token,
+                                    'userId':response_data['id'],
+                                    'emailId':response_data['email'],
+                                    'message':'Logged in successfully'
+                                    }), 201)
             
             print("check_password_hash--else-")
             return make_response(
