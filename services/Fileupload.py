@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template,request, redirect, url_for, make_response,session, jsonify,Blueprint, flash
 from flask_mysqldb import MySQL
+from models.Authorize import Authorize
 from models.BaseDB  import BaseDB  
 import re
 
@@ -10,6 +11,11 @@ from models.Files import Files
 files = Blueprint("files", __name__)
 
 
+@files.route('/index')
+@Authorize.token_required
+def index():
+   return render_template('index.html')
+	
 
 @files.route('/upload')
 def upload():
@@ -17,6 +23,7 @@ def upload():
 	
 
 @files.route('/uploader', methods =['POST'])
+@Authorize.token_required
 def uploader():
     try:
         
@@ -28,10 +35,12 @@ def uploader():
             filemodel = Files()
             response_data  = filemodel.fileupload(req_file,bytedata)
             print("--response_data-",response_data)
+            return jsonify({"message": str(response_data)}), 200
         else:
             response_data  = "File not selected"           
             print("--response_data-",response_data)
-        return render_template('fileupload.html', msg  = response_data )
+        # return render_template('fileupload.html', msg  = response_data )
+            return jsonify({"message": str(response_data)}), 500
 
     except Exception as e:
         print(e)
@@ -40,6 +49,7 @@ def uploader():
 
 
 @files.route('/downloader', methods =['POST'])
+@Authorize.token_required
 def downloader():
     try:
         

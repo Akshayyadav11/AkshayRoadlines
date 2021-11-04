@@ -17,9 +17,11 @@ class Files(BaseDB):
             
             connection = self.db.get_connection()
             cursor = connection.cursor(dictionary=True)
-
-            userid = session['id']
-            username = session['username']
+            print("file---session",session)
+            # userid = session['id']
+            # username = session['username']
+            userid= session['profile']['userId']
+            username = session['profile']['emailId']
             
             filename,filetype = os.path.splitext(file)
             print("---filename----",userid, username, filename,filetype)

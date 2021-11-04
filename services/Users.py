@@ -27,7 +27,7 @@ def login():
     
             emailId = request.form['emailId']
             password = request.form['password']
-            print("---",emailId,password)
+            # print("---",emailId,password)
             loginDetails =  Users()
             response_data = loginDetails.login(emailId)
             if response_data is None:
@@ -38,18 +38,31 @@ def login():
                     ) 
             
             if check_password_hash(response_data['password'],password):
-                print("-------in inf-------")
+                # print("-------in inf-------")
                 access_token = Authorize.create_access_token(response_data)
-                refresh_token = Authorize.create_refresh_token(response_data)
-                return make_response(jsonify({
-                                    'access_token' : access_token,
-                                    'refresh_token':refresh_token,
-                                    'userId':response_data['id'],
-                                    'emailId':response_data['email'],
-                                    'message':'Logged in successfully'
-                                    }), 201)
+
+               
+                session['jwt_payload'] = response_data
+                session['profile'] = {
+                        'access_token' : access_token,
+                        'userId':response_data['id'],
+                        'emailId':response_data['email'],
+                        'message':'Logged in successfully'
+                }
+                # print(session)
+                return redirect('/index')
+
+                # refresh_token = Authorize.create_refresh_token(response_data)
+
+                # return make_response(jsonify({
+                #                     'access_token' : access_token,
+                #                     'refresh_token':refresh_token,
+                #                     'userId':response_data['id'],
+                #                     'emailId':response_data['email'],
+                #                     'message':'Logged in successfully'
+                #                     }), 201)
             
-            print("check_password_hash--else-")
+            #print("check_password_hash--else-")
             return make_response(
                     'Could not verify passoword !!',
                     401,

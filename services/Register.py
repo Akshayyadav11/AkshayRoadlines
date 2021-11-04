@@ -29,10 +29,11 @@ def register():
 
 @registers.route('/logout')
 def logout():
-    print("-----befo----",session)
-    session.pop('loggedin', None)
-    session.pop('id', None)
-    session.pop('emailId', None)
-    print("---afte------",session)
+    # print("-----befo----",session)
+    # session.pop('loggedin', None)
+    # session.pop('id', None)
+    # session.pop('emailId', None)
+    session.clear()
+    # print("---afte------",session)
     
     return redirect(url_for('users.login'))
