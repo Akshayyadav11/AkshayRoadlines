@@ -71,3 +71,30 @@ def downloader():
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 500   
+    
+
+    
+@files.route('/readexcel', methods =['POST'])
+@Authorize.token_required
+def read_excel():
+    try:
+        
+        if request.method == 'POST' and request.files['file'].filename:
+            
+            excel_file = request.files['file']
+            req_file = request.files['file'].filename
+            bytedata = request.files['file'].read()
+            
+            filemodel = Files()
+            response_data  = filemodel.read_excel_file(excel_file)
+            print("--response_data-",response_data)
+            return jsonify({"message": str(response_data)}), 200
+        else:
+            response_data  = "File not selected"           
+            print("--response_data-",response_data)
+        # return render_template('fileupload.html', msg  = response_data )
+            return jsonify({"message": str(response_data)}), 500
+
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)}), 500

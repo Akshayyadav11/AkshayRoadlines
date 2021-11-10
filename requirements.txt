@@ -2,3 +2,6 @@ flask_mysqldb
 Flask
 jsonify
 pep8
+pandas
+matplotlib
+numpy
